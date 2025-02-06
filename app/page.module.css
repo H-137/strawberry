@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
 .page {
   --gray-rgb: 0, 0, 0;
   --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
@@ -15,6 +17,51 @@
   gap: 64px;
   font-family: var(--font-geist-sans);
 }
+
+.header {
+  position: absolute;
+  left: 50%;
+  top: 1%;
+  transform: translate(-60%, 0);
+  text-align: center;
+  font-family: Pacifico, cursive;
+  color: aliceblue;
+}
+
+.content {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: rgb(0, 0, 0);
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.container {
+  display: flex;
+  justify-content: center; /* Centers the main element horizontally */
+  align-items: center; /* Centers the main element vertically */
+  position: relative; /* Needed for absolute positioning of the top-right element */
+}
+
+.img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.top {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 4px;
+}
+
 
 @media (prefers-color-scheme: dark) {
   .page {
