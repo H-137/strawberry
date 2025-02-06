@@ -5,6 +5,7 @@ import { MathUtils } from "three";
 import { useEffect, useRef, useState } from "react";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
+import Counter from './counter';  // Import Counter component
 
 function MyThree() {
   const refContainer = useRef(null);
@@ -15,12 +16,27 @@ function MyThree() {
     height: 0
   });
   const [score, setScore] = useState(0); // Counter for score
+  const [globalCounter, setGlobalCounter] = useState(0);  // State to manage the global counter
 
   const handleMouseMove = (event) => {
     mousePosition.current = {
       x: (event.clientX - window.innerWidth / 2) * 2,
       y: -(event.clientY - window.innerHeight / 2) * 2
     };
+  };
+
+  const handleIncrement = async () => {
+    try {
+      // Increment the global counter in the backend
+      const res = await fetch("/api/counter", { method: "POST" });
+      const data = await res.json();
+      console.log("Global counter incremented:", data.value);
+      
+      // Fetch the updated counter value and update the local state
+      setGlobalCounter(data.value);  // Update global counter after increment
+    } catch (error) {
+      console.error("Error incrementing counter:", error);
+    }
   };
 
   const handleResize = () => {
@@ -82,7 +98,6 @@ function MyThree() {
           object.scale.set(0.03, 0.03, 0.03);
           object.rotation.set(90, 0, 0);
           scene.add(object);
-
           modelRef.current = object; // ✅ Store the model reference
         },
         (xhr) => console.log(`OBJ Loading: ${(xhr.loaded / xhr.total) * 100}%`),
@@ -95,12 +110,14 @@ function MyThree() {
       requestAnimationFrame(animate);
       
       if (modelRef.current) {
-        const dx = mousePosition.current.x;
-        const dy = mousePosition.current.y;
+        const mouseVector = new THREE.Vector3(mousePosition.current.x, mousePosition.current.y, 0.5);
+        mouseVector.unproject(camera);
 
-        // Compute the angle in radians between the model and the mouse position
-        var targetRotationY = Math.atan2(dy, dx);
-        targetRotationY = targetRotationY + THREE.MathUtils.degToRad(90);
+        // Get Direction to Mouse Position
+        const direction = new THREE.Vector3().subVectors(mouseVector, modelRef.current.position).normalize();
+
+        // Compute Rotation Angle (Y-Axis)
+        const targetRotationY = Math.atan2(direction.x, -direction.y);
         modelRef.current.rotation.y = targetRotationY;
 
         // Update position based on mouse movement
@@ -114,12 +131,16 @@ function MyThree() {
             // Re-randomize ball position
             scene.remove(ball);  // Remove the ball from the scene
             balls.splice(index, 1);  // Remove ball from array
-
             const newBall = createRandomBall();  // Create a new ball at a random position
             balls.push(newBall);  // Add the new ball to the array
             scene.add(newBall);  // Add the new ball to the scene
-            
-            setScore(prevScore => prevScore + 1);  // Increment the score
+            setScore(prevScore => prevScore + 1);  // Increment the score locally
+            // scale fish size by 1.1
+            modelRef.current.scale.set(modelRef.current.scale.x + 0.0001, modelRef.current.scale.y + 0.0001, modelRef.current.scale.z + 0.0001);
+            handleIncrement();  // Increment the global counter after each collision
+            // play audio
+            const audio = new Audio("/eating.mp3");
+            audio.play();
           }
         });
       }
@@ -146,7 +167,10 @@ function MyThree() {
     <div>
       <div ref={refContainer} onMouseMove={handleMouseMove} style={{ width: "100vw", height: "100vh" }} />
       <div style={{ position: 'absolute', top: 5, left: 5, color: 'white', fontSize: 24, fontFamily: 'Pacifico, cursive' }}>
-        Score: {score}
+        Pellet Count: {score}
+      </div>
+      <div style={{ position: 'absolute', top: 5, right: 5, color: 'white', fontSize: 24, fontFamily: 'Pacifico, cursive' }}>
+        <Counter globalCounter={globalCounter} /> {/* Pass the globalCounter state */}
       </div>
     </div>
   );
