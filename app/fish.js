@@ -56,7 +56,7 @@ function MyThree() {
       // brown
       const material = new THREE.MeshBasicMaterial({ color: 0x8B4513 });
       const circle = new THREE.Mesh(geometry, material);
-      circle.position.set(Math.random() * window.innerWidth / 50 - 17, Math.random() * window.innerWidth / 100 - 8, 0);
+      circle.position.set(Math.random() * 10 - 5, Math.random() * 10 - 5, 0);
       return circle;
     };
 
