@@ -14,11 +14,15 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Strawberry",
   description: "Created by Matthew Leopold",
+  
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/strawberry.ico" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
       </body>

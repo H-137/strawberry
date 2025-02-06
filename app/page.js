@@ -17,7 +17,7 @@ export default function Home() {
       {showDiv && (
         <div className={styles.content}>
           <div className={styles.container}>
-            <img className={styles.img} src="/strawberry.jpg" alt="Strawberry" height={400}/>
+            <img className={styles.img} src="/strawberry.JPG" alt="Strawberry" height={400}/>
             <button className={styles.top} onClick={handleButtonClick}>X </button>
           </div>
           This is a Strawberry the fish. She is very hungry! <br />
