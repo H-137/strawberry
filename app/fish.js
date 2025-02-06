@@ -11,8 +11,8 @@ function MyThree() {
   const modelRef = useRef(null); 
   const mousePosition = useRef({ x: 0, y: 0 });
   const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight
+    width: 0,
+    height: 0
   });
   const [score, setScore] = useState(0); // Counter for score
 
