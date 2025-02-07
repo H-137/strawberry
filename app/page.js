@@ -20,8 +20,9 @@ export default function Home() {
             <img className={styles.img} src="/strawberry.JPG" alt="Strawberry" height={400}/>
             <button className={styles.top} onClick={handleButtonClick}>X </button>
           </div>
-          This is a Strawberry the fish. She is very hungry! <br />
-          Help her find her food.
+          This is Strawberry the fish. She is very hungry! <br />
+          Help her find the food in her tank! <br />
+          🐟
         </div>
       )}
       <MyThree />

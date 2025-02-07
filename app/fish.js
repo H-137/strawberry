@@ -135,7 +135,6 @@ function MyThree() {
             balls.push(newBall);  // Add the new ball to the array
             scene.add(newBall);  // Add the new ball to the scene
             setScore(prevScore => prevScore + 1);  // Increment the score locally
-            // scale fish size by 1.1
             modelRef.current.scale.set(modelRef.current.scale.x + 0.0001, modelRef.current.scale.y + 0.0001, modelRef.current.scale.z + 0.0001);
             handleIncrement();  // Increment the global counter after each collision
             // play audio
